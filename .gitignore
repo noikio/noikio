@@ -1,0 +1,6 @@
+.vem/
+.agents/
+node_modules/
+.playwright-mcp/
+
+backend/data/

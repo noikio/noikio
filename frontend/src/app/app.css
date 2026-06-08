@@ -1,0 +1,26 @@
+.nav-elevated {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(3, 3, 7, 0.70);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.nav-item-mobile {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  color: rgb(203, 213, 225);
+  font-size: 0.875rem;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-item-mobile:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgb(229, 231, 235);
+}
+
+.nav-item-mobile.nav-active {
+  color: rgb(165, 180, 252);
+  background-color: rgba(165, 180, 252, 0.1);
+}

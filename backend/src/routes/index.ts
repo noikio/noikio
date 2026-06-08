@@ -1,0 +1,38 @@
+import { Hono } from 'hono';
+import { promptsRouter } from './prompts.js';
+import { chainsRouter } from './chains.js';
+import { runRouter } from './run.js';
+import { authRouter } from './auth.js';
+import { ratingsRouter } from './ratings.js';
+import { commentsRouter } from './comments.js';
+import { leaderboardRouter } from './leaderboard.js';
+import { usersRouter } from './users.js';
+import { platformsRouter } from './platforms.js';
+import { adminRouter } from './admin.js';
+import { followsRouter } from './follows.js';
+import { notificationsRouter } from './notifications.js';
+import { bookmarksRouter, bookmarkActionRouter } from './bookmarks.js';
+import { feedRouter } from './feed.js';
+import { trendingRouter } from './trending.js';
+import { optionalAuth } from '../middleware/auth.js';
+
+export const apiRouter = new Hono();
+
+apiRouter.use('*', optionalAuth);
+apiRouter.get('/health', (c) => c.json({ ok: true }));
+apiRouter.route('/auth', authRouter);
+apiRouter.route('/prompts', promptsRouter);
+apiRouter.route('/prompts', ratingsRouter);
+apiRouter.route('/prompts', commentsRouter);
+apiRouter.route('/chains', chainsRouter);
+apiRouter.route('/run', runRouter);
+apiRouter.route('/leaderboard', leaderboardRouter);
+apiRouter.route('/users', usersRouter);
+apiRouter.route('/users', followsRouter);
+apiRouter.route('/platforms', platformsRouter);
+apiRouter.route('/admin', adminRouter);
+apiRouter.route('/notifications', notificationsRouter);
+apiRouter.route('/prompts', bookmarkActionRouter);
+apiRouter.route('/bookmarks', bookmarksRouter);
+apiRouter.route('/feed', feedRouter);
+apiRouter.route('/trending', trendingRouter);

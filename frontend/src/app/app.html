@@ -1,0 +1,250 @@
+<div class="blob blob-1" aria-hidden="true"></div>
+<div class="blob blob-2" aria-hidden="true"></div>
+<div class="blob blob-3" aria-hidden="true"></div>
+
+<div class="sticky top-4 z-40 px-4 sm:px-6 pointer-events-none">
+  <nav
+    class="max-w-5xl mx-auto rounded-2xl pointer-events-auto border border-transparent duration-300"
+    style="
+      transition-property: border-color, background-color, backdrop-filter, box-shadow;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    "
+    [class.nav-elevated]="scrolled()"
+  >
+    <!-- Desktop/Tablet Layout -->
+    <div class="hidden sm:flex items-center gap-1 h-14 px-5">
+      <a routerLink="/" class="flex items-center gap-2 mr-5 group" (click)="closeMobileMenu()">
+        <svg
+          class="w-5 h-5 text-indigo-400 group-hover:text-violet-400 transition-colors duration-300"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M11.983 1.907a.75.75 0 0 0-1.292-.657l-8.5 9.5A.75.75 0 0 0 2.75 12h6.572l-1.305 6.093a.75.75 0 0 0 1.292.657l8.5-9.5A.75.75 0 0 0 17.25 8h-6.572l1.305-6.093Z"
+          />
+        </svg>
+        <span class="font-semibold tracking-tight text-sm gradient-text">noikio</span>
+      </a>
+      @if (authStore.isAuthenticated()) {
+        <a
+          routerLink="/feed"
+          routerLinkActive="nav-active"
+          class="nav-item"
+          (click)="closeMobileMenu()"
+          >Feed</a
+        >
+        <a
+          routerLink="/discover"
+          routerLinkActive="nav-active"
+          class="nav-item"
+          (click)="closeMobileMenu()"
+          >Discover</a
+        >
+        <a
+          routerLink="/leaderboard"
+          routerLinkActive="nav-active"
+          class="nav-item"
+          (click)="closeMobileMenu()"
+          >Leaderboard</a
+        >
+        <a
+          routerLink="/prompts"
+          routerLinkActive="nav-active"
+          class="nav-item"
+          (click)="closeMobileMenu()"
+          >Prompts</a
+        >
+        <a
+          routerLink="/chains"
+          routerLinkActive="nav-active"
+          class="nav-item"
+          (click)="closeMobileMenu()"
+          >Chains</a
+        >
+      } @else {
+        <a
+          routerLink="/discover"
+          routerLinkActive="nav-active"
+          class="nav-item"
+          (click)="closeMobileMenu()"
+          >Discover</a
+        >
+      }
+      <div class="flex-1"></div>
+      @if (authStore.isAuthenticated()) {
+        <div class="flex items-center gap-2 mr-1">
+          <app-notification-bell />
+          <div
+            class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
+            style="
+              background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+              box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+            "
+          >
+            {{ (authStore.currentUser()?.username ?? 'U')[0].toUpperCase() }}
+          </div>
+          <span class="text-xs text-slate-300 font-medium">
+            @if (
+              authStore.currentUser()?.plan === 'pro' ||
+              authStore.currentUser()?.plan === 'enterprise'
+            ) {
+              <span class="font-bold mr-0.5" style="color: #fbbf24">{{
+                authStore.currentUser()?.plan === 'enterprise' ? '$$' : '$'
+              }}</span>
+            }
+            {{ authStore.currentUser()?.username }}</span
+          >
+        </div>
+        <button (click)="authStore.logout()" class="btn-ghost px-3 py-1.5 text-xs cursor-pointer">
+          Sign out
+        </button>
+      } @else {
+        <a routerLink="/auth/login" class="btn-ghost px-3 py-1.5 text-xs mr-1">Sign in</a>
+        <a routerLink="/auth/register" class="btn-primary px-4 py-1.5 text-xs">Register</a>
+      }
+    </div>
+
+    <div class="sm:hidden flex items-center justify-between h-14 px-4">
+      <a routerLink="/" class="flex items-center gap-2 group" (click)="closeMobileMenu()">
+        <svg
+          class="w-5 h-5 text-indigo-400 group-hover:text-violet-400 transition-colors duration-300"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M11.983 1.907a.75.75 0 0 0-1.292-.657l-8.5 9.5A.75.75 0 0 0 2.75 12h6.572l-1.305 6.093a.75.75 0 0 0 1.292.657l8.5-9.5A.75.75 0 0 0 17.25 8h-6.572l1.305-6.093Z"
+          />
+        </svg>
+        <span class="font-semibold tracking-tight text-sm gradient-text">noikio</span>
+      </a>
+      <button
+        (click)="toggleMobileMenu()"
+        class="p-1 rounded-lg hover:bg-white/5 transition-colors"
+        aria-label="Toggle menu"
+      >
+        @if (!mobileMenuOpen()) {
+          <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        } @else {
+          <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        }
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    @if (mobileMenuOpen()) {
+      <div class="sm:hidden border-t border-white/5 bg-white/2">
+        <div class="px-4 py-3 space-y-2">
+          @if (authStore.isAuthenticated()) {
+            <a
+              routerLink="/feed"
+              routerLinkActive="nav-active"
+              class="nav-item-mobile"
+              (click)="closeMobileMenu()"
+              >Feed</a
+            >
+            <a
+              routerLink="/discover"
+              routerLinkActive="nav-active"
+              class="nav-item-mobile"
+              (click)="closeMobileMenu()"
+              >Discover</a
+            >
+            <a
+              routerLink="/leaderboard"
+              routerLinkActive="nav-active"
+              class="nav-item-mobile"
+              (click)="closeMobileMenu()"
+              >Leaderboard</a
+            >
+            <a
+              routerLink="/prompts"
+              routerLinkActive="nav-active"
+              class="nav-item-mobile"
+              (click)="closeMobileMenu()"
+              >Prompts</a
+            >
+            <a
+              routerLink="/chains"
+              routerLinkActive="nav-active"
+              class="nav-item-mobile"
+              (click)="closeMobileMenu()"
+              >Chains</a
+            >
+            <div class="pt-2 mt-2 border-t border-white/5">
+              <div class="flex items-center gap-2 mb-3">
+                <div
+                  class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
+                  style="
+                    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                    box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+                  "
+                >
+                  {{ (authStore.currentUser()?.username ?? 'U')[0].toUpperCase() }}
+                </div>
+                <span class="text-xs text-slate-300 font-medium">
+                  @if (
+                    authStore.currentUser()?.plan === 'pro' ||
+                    authStore.currentUser()?.plan === 'enterprise'
+                  ) {
+                    <span class="font-bold mr-0.5" style="color: #fbbf24">{{
+                      authStore.currentUser()?.plan === 'enterprise' ? '$$' : '$'
+                    }}</span>
+                  }
+                  {{ authStore.currentUser()?.username }}</span
+                >
+              </div>
+              <button
+                (click)="authStore.logout(); closeMobileMenu()"
+                class="btn-ghost px-3 py-1.5 text-xs cursor-pointer w-full text-left"
+              >
+                Sign out
+              </button>
+            </div>
+          } @else {
+            <a
+              routerLink="/discover"
+              routerLinkActive="nav-active"
+              class="nav-item-mobile"
+              (click)="closeMobileMenu()"
+              >Discover</a
+            >
+            <div class="pt-3 mt-3 border-t border-white/5 space-y-2">
+              <a
+                routerLink="/auth/login"
+                class="btn-ghost px-3 py-2 text-xs block text-center w-full"
+                (click)="closeMobileMenu()"
+                >Sign in</a
+              >
+              <a
+                routerLink="/auth/register"
+                class="btn-primary px-4 py-2 text-xs block text-center w-full"
+                (click)="closeMobileMenu()"
+                >Register</a
+              >
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </nav>
+</div>
+
+<main class="relative z-10 max-w-5xl mx-auto px-6 py-8">
+  <router-outlet />
+</main>
